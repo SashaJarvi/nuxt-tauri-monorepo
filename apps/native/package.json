@@ -14,7 +14,8 @@
     "tauri:build": "tauri build"
   },
   "dependencies": {
-    "nuxt": "^4.1.2",
+    "@nuxt/ui": "4.0.0",
+    "@repo/ui": "workspace:^",
     "@tauri-apps/api": "^2.8.0",
     "@tauri-apps/plugin-opener": "^2.0.0",
     "@tauri-apps/plugin-shell": "^2.3.1"
@@ -23,6 +24,7 @@
     "@tauri-apps/cli": "^2.8.4",
     "@vueuse/core": "^13.9.0",
     "@vueuse/nuxt": "^13.9.0",
+    "nuxt": "^4.1.2",
     "typescript": "^5.9.2"
   }
 }

@@ -1,4 +1,6 @@
 export default defineNuxtConfig({
+  extends: ["@repo/ui"],
+
   app: {
     head: {
       title: "native",
