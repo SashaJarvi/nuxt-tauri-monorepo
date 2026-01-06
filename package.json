@@ -4,6 +4,14 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "dev:web": "pnpm --filter nuxt-app dev",
+    "dev:native": "pnpm --filter native tauri dev",
+    "dev:android": "pnpm --filter native tauri android dev",
+    "dev:ios": "pnpm --filter native tauri ios dev",
+    "build:web": "pnpm --filter nuxt-app build",
+    "build:native": "pnpm --filter native tauri build",
+    "build:android": "pnpm --filter native tauri android build",
+    "build:ios": "pnpm --filter native tauri ios build",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "clean": "turbo run clean",
@@ -15,5 +23,5 @@
     "prettier": "^3.2.5",
     "turbo": "^2.5.8"
   },
-  "packageManager": "pnpm@8.15.6"
+  "packageManager": "pnpm@9.15.0"
 }

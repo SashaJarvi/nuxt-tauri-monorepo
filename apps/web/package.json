@@ -10,10 +10,13 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@nuxt/eslint": "1.9.0",
-    "@nuxt/ui": "4.0.0",
+    "@repo/ui": "workspace:^",
+    "nuxt": "catalog:"
+  },
+  "devDependencies": {
+    "@nuxt/eslint": "catalog:",
     "eslint": "^9.0.0",
-    "nuxt": "^4.1.2",
-    "typescript": "^5.6.3"
+    "typescript": "catalog:",
+    "baseline-browser-mapping": "catalog:"
   }
 }

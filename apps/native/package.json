@@ -14,15 +14,16 @@
     "tauri:build": "tauri build"
   },
   "dependencies": {
-    "nuxt": "^4.1.2",
-    "@tauri-apps/api": "^2.8.0",
-    "@tauri-apps/plugin-opener": "^2.0.0",
-    "@tauri-apps/plugin-shell": "^2.3.1"
+    "@repo/ui": "workspace:^",
+    "@tauri-apps/api": "catalog:",
+    "@tauri-apps/plugin-opener": "catalog:",
+    "@tauri-apps/plugin-shell": "catalog:"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^2.8.4",
-    "@vueuse/core": "^13.9.0",
-    "@vueuse/nuxt": "^13.9.0",
-    "typescript": "^5.9.2"
+    "@tauri-apps/cli": "catalog:",
+    "@vueuse/nuxt": "catalog:",
+    "nuxt": "catalog:",
+    "typescript": "catalog:",
+    "baseline-browser-mapping": "catalog:"
   }
 }
