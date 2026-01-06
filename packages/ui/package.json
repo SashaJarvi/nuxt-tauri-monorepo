@@ -2,17 +2,45 @@
   "name": "@repo/ui",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "main": "./nuxt.config.ts",
-  "scripts": {
-    "lint": "eslint ."
+  "exports": {
+    ".": "./nuxt.config.ts",
+    "./globals.css": "./app/assets/css/globals.css",
+    "./tailwind.config": "./tailwind.config.ts",
+    "./postcss.config": "./postcss.config.mjs",
+    "./lib/utils": "./app/lib/utils.ts",
+    "./types": "./app/types/index.ts",
+    "./types/*": "./app/types/*.ts",
+    "./schemas/*": "./app/schemas/*.ts",
+    "./utils/*": "./app/utils/*.ts",
+    "./app/utils/api": "./app/utils/api.ts",
+    "./app/schemas/api": "./app/schemas/api.ts",
+    "./app/types/api": "./app/types/api.ts"
   },
-  "devDependencies": {
-    "eslint-config-custom": "workspace:*",
-    "tsconfig": "workspace:*",
-    "nuxt": "^4.1.2"
+  "scripts": {
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "shadcn": "pnpm dlx shadcn-vue@latest"
   },
   "dependencies": {
-    "@nuxt/ui": "4.0.0",
-    "tailwindcss": "^4.1.14"
+    "@nuxt/ui": "catalog:",
+    "@tauri-apps/api": "catalog:",
+    "@vueuse/core": "catalog:",
+    "radix-vue": "catalog:",
+    "class-variance-authority": "catalog:",
+    "clsx": "catalog:",
+    "tailwind-merge": "catalog:",
+    "tailwindcss": "catalog:",
+    "lucide-vue-next": "^0.474.0",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "nuxt": "catalog:",
+    "typescript": "catalog:",
+    "tsconfig": "workspace:*",
+    "eslint-config-custom": "workspace:*",
+    "@tauri-apps/plugin-os": "^2.2.0",
+    "@tauri-apps/plugin-opener": "catalog:"
   }
 }
