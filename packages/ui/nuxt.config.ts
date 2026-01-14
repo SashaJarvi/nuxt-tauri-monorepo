@@ -4,10 +4,13 @@ export default defineNuxtConfig({
 
   css: ["@repo/ui/app/assets/css/globals.css"],
 
-  components: [{ path: "./app/components", pathPrefix: false }],
+  components: [
+    { path: "./components/ui", pathPrefix: false },
+    { path: "./components/views", pathPrefix: false },
+  ],
 
   imports: {
-    dirs: ["./app/composables"],
+    dirs: ["./composables"],
   },
 
   compatibilityDate: "2025-01-01",
