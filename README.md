@@ -1,84 +1,215 @@
-# Turborepo VueJS/NuxtJS starter
+# Nuxt 4 + Tauri 2 Monorepo
 
-This is a community-maintained example. If you experience a problem, please submit a pull request with a fix. GitHub Issues will be closed.
+A production-ready monorepo template for building cross-platform applications with **Nuxt 4** and **Tauri 2**. Deploy to web, desktop (Windows, macOS, Linux), and mobile (iOS, Android) from a single codebase.
 
-## Using this example
+## Features
 
-Run the following command:
+- **Nuxt 4** with Vue 3 Composition API
+- **Tauri 2** for desktop and mobile builds
+- **Turborepo** for efficient monorepo management
+- **pnpm Catalogs** for centralized dependency versioning
+- **Shared UI Layer** with auto-imported components
+- **Nuxt UI** component library with Tailwind CSS v4
+- **shadcn-vue** style components (Button, Card, Textarea, etc.)
+- **Shared Server Routes** across web and native apps
+- **Text Analysis Feature** with NLP-powered sentiment analysis
 
-```sh
-npx create-turbo@latest -e with-vue-nuxt
-```
-
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Nuxt](https://nuxt.com/) app
-- `web`: another [Vue3](https://vuejs.org/) app
-- `ui`: a stub Vue component library shared by both `web` and `docs` applications
-- `eslint-config-custom`: `eslint` configurations (includes `@nuxtjs/eslint-config-typescript` and `@vue/eslint-config-typescript`)
-- `tsconfig`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+## Project Structure
 
 ```
-cd my-turborepo
-pnpm build
+nuxt-tauri-monorepo/
+├── apps/
+│   ├── web/                    # Nuxt 4 web application
+│   │   └── app/
+│   │       └── app.vue
+│   └── native/                 # Nuxt 4 + Tauri 2 native application
+│       ├── app/
+│       │   └── app.vue
+│       └── src-tauri/          # Tauri Rust backend
+│           ├── src/
+│           ├── Cargo.toml
+│           └── tauri.conf.json
+├── packages/
+│   ├── ui/                     # Shared Nuxt layer
+│   │   ├── app/
+│   │   │   ├── components/     # Shared Vue components
+│   │   │   │   ├── ui/         # UI primitives (Button, Card, etc.)
+│   │   │   │   └── views/      # Feature views (AnalyzeTextView)
+│   │   │   ├── composables/    # Shared composables
+│   │   │   ├── types/          # TypeScript types
+│   │   │   ├── schemas/        # Zod validation schemas
+│   │   │   └── assets/css/     # Global styles
+│   │   ├── server/api/         # Shared API routes
+│   │   └── nuxt.config.ts
+│   ├── eslint-config-custom/   # Shared ESLint configuration
+│   └── tsconfig/               # Shared TypeScript configuration
+├── pnpm-workspace.yaml         # Workspace config with catalogs
+├── turbo.json                  # Turborepo configuration
+└── package.json                # Root scripts
 ```
 
-### Develop
+## Prerequisites
 
-To develop all apps and packages, run the following command:
+- [Node.js](https://nodejs.org/) >= 18
+- [pnpm](https://pnpm.io/) >= 9.15.0
+- [Rust](https://rustup.rs/) (for Tauri builds)
 
-```
-cd my-turborepo
-pnpm dev
-```
+### For Mobile Development
 
-### Remote Caching
+- **iOS**: Xcode with iOS SDK
+- **Android**: Android Studio with Android SDK
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+## Getting Started
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+### Installation
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+```bash
+# Clone the repository
+git clone <repository-url>
+cd nuxt-tauri-monorepo
 
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
+# Install dependencies
+pnpm install
 ```
 
-## Useful Links
+### Development
 
-Learn more about the power of Turborepo:
+```bash
+# Start web app
+pnpm dev:web
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+# Start native desktop app (requires web server running)
+pnpm dev:native
+
+# Start Android app
+pnpm dev:android
+
+# Start iOS app
+pnpm dev:ios
+```
+
+### Building
+
+```bash
+# Build web app
+pnpm build:web
+
+# Build native desktop app
+pnpm build:native
+
+# Build Android app
+pnpm build:android
+
+# Build iOS app
+pnpm build:ios
+```
+
+## Key Technologies
+
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| Nuxt | 4.1.2 | Vue meta-framework |
+| Vue | 3.5.13 | Frontend framework |
+| Tauri | 2.x | Desktop/mobile runtime |
+| Tailwind CSS | 4.x | Utility-first CSS |
+| Nuxt UI | 4.x | Component library |
+| TypeScript | 5.7.2 | Type safety |
+| Zod | 3.24.0 | Schema validation |
+| natural | 8.0.1 | NLP text analysis |
+| Turborepo | 2.5.8 | Monorepo tooling |
+
+## Shared UI Layer
+
+The `packages/ui` package is a Nuxt layer that provides shared functionality across all apps:
+
+### Components
+
+- **UI Primitives**: Button, Card, CardHeader, CardTitle, CardContent, CardFooter, Textarea
+- **Views**: AnalyzeTextView (text analysis feature)
+
+### Composables
+
+- `usePlatform()` - Detect runtime platform (web/Tauri)
+- `useApi()` - Unified API client for web and native
+- `useTauri()` - Tauri-specific utilities
+
+### Server Routes
+
+- `GET /api/health` - Health check endpoint
+- `POST /api/example` - Example POST endpoint
+- `POST /api/text-analysis` - Text analysis with NLP
+
+## pnpm Catalogs
+
+Dependencies are managed centrally via pnpm catalogs in `pnpm-workspace.yaml`:
+
+```yaml
+catalog:
+  nuxt: "^4.1.2"
+  vue: "^3.5.13"
+  tailwindcss: "^4.1.14"
+  # ... more dependencies
+```
+
+Use in package.json:
+
+```json
+{
+  "dependencies": {
+    "nuxt": "catalog:"
+  }
+}
+```
+
+## Scripts Reference
+
+| Script | Description |
+|--------|-------------|
+| `pnpm dev` | Start all apps in development mode |
+| `pnpm dev:web` | Start web app only |
+| `pnpm dev:native` | Start native desktop app |
+| `pnpm dev:android` | Start Android app |
+| `pnpm dev:ios` | Start iOS app |
+| `pnpm build` | Build all apps |
+| `pnpm build:web` | Build web app |
+| `pnpm build:native` | Build native desktop app |
+| `pnpm lint` | Run ESLint across all packages |
+| `pnpm format` | Format code with Prettier |
+| `pnpm shadcn` | Add shadcn-vue components |
+
+## Adding New Components
+
+Use shadcn-vue to add new UI components:
+
+```bash
+pnpm shadcn add <component-name>
+```
+
+Components are added to `packages/ui/app/components/ui/`.
+
+## Configuration
+
+### Tauri Configuration
+
+Edit `apps/native/src-tauri/tauri.conf.json` to configure:
+
+- App name and identifier
+- Window settings
+- Build commands
+- Bundle targets
+
+### Nuxt Configuration
+
+Each app extends the shared UI layer:
+
+```typescript
+// apps/web/nuxt.config.ts
+export default defineNuxtConfig({
+  extends: ["@repo/ui"],
+  // app-specific config
+});
+```
+
+## License
+
+MIT
