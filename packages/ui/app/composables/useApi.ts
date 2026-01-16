@@ -6,20 +6,38 @@ export function useApi() {
 
   // Web app uses relative URLs, native uses absolute
   const baseUrl = computed(() =>
-    isTauri.value ? (config.public.apiBaseUrl as string) || "" : "",
+    isTauri.value ? (config.public.apiBaseUrl as string) || "" : ""
   );
 
   async function request<T>(
     endpoint: string,
-    options?: RequestInit,
+    options?: RequestInit
   ): Promise<ApiResult<T>> {
     try {
-      const response = await fetch(`${baseUrl.value}${endpoint}`, {
+      // Debug logging
+      console.log("[useApi] isTauri:", isTauri.value);
+      console.log("[useApi] baseUrl:", baseUrl.value);
+      console.log("[useApi] full URL:", `${baseUrl.value}${endpoint}`);
+
+      // Use Tauri HTTP plugin for native apps, browser fetch for web
+      let fetchFn: typeof fetch = fetch;
+      if (isTauri.value) {
+        console.log("[useApi] Using Tauri HTTP plugin fetch");
+        const { fetch: tauriFetch } = await import("@tauri-apps/plugin-http");
+        fetchFn = tauriFetch;
+      } else {
+        console.log("[useApi] Using browser fetch");
+      }
+
+      const response = await fetchFn(`${baseUrl.value}${endpoint}`, {
         headers: { "Content-Type": "application/json" },
         ...options,
       });
 
-      const data = await response.json();
+      // Use text() + JSON.parse() as workaround for Tauri iOS streaming issue
+      const text = await response.text();
+      console.log("[useApi] Response text:", text);
+      const data = JSON.parse(text);
 
       if (!response.ok) {
         return {
@@ -33,6 +51,7 @@ export function useApi() {
 
       return { success: true, data: data.data ?? data };
     } catch (err) {
+      console.error("[useApi] Error:", err);
       return {
         success: false,
         error: {

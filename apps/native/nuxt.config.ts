@@ -20,9 +20,10 @@ export default defineNuxtConfig({
   modules: ["@vueuse/nuxt"],
 
   // Runtime config for API base URL (native apps call web API)
+  // Override with NUXT_PUBLIC_API_BASE_URL environment variable or .env file
   runtimeConfig: {
     public: {
-      apiBaseUrl: process.env.API_BASE_URL || "http://localhost:3000",
+      apiBaseUrl: "http://localhost:3000",
     },
   },
 

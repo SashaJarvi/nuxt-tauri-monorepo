@@ -16,6 +16,11 @@ export default defineNuxtConfig({
     },
   },
 
+  // Allow access from other devices on the network (iOS, Android)
+  devServer: {
+    host: "0.0.0.0",
+  },
+
   compatibilityDate: "2025-01-01",
   devtools: { enabled: true },
 });
