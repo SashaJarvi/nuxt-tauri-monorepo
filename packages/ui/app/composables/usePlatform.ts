@@ -1,16 +1,30 @@
-export function usePlatform() {
-  const isWeb = ref(true);
-  const isDesktop = ref(false);
-  const isMobile = ref(false);
-  const isTauri = ref(false);
+// Shared state (singleton pattern) - ensures consistent state across all calls
+const isWeb = ref(true);
+const isDesktop = ref(false);
+const isMobile = ref(false);
+const isTauri = ref(false);
+let initialized = false;
 
-  onMounted(async () => {
-    if (typeof window !== "undefined" && "__TAURI__" in window) {
+export function usePlatform() {
+  // Synchronous Tauri detection (runs immediately on first call)
+  // This is critical for useApi() to get the correct baseUrl
+  // Tauri v2 uses __TAURI_INTERNALS__, v1 used __TAURI__
+  if (!initialized && typeof window !== "undefined") {
+    const hasTauri = "__TAURI__" in window || "__TAURI_INTERNALS__" in window;
+    console.log("[usePlatform] Detection - __TAURI__:", "__TAURI__" in window);
+    console.log("[usePlatform] Detection - __TAURI_INTERNALS__:", "__TAURI_INTERNALS__" in window);
+    if (hasTauri) {
       isTauri.value = true;
       isWeb.value = false;
+      console.log("[usePlatform] Tauri detected!");
+    }
+    initialized = true;
+  }
 
+  // Async platform detection (mobile vs desktop) - requires plugin import
+  onMounted(async () => {
+    if (isTauri.value) {
       try {
-        // Detect mobile vs desktop via Tauri
         const { platform } = await import("@tauri-apps/plugin-os");
         const os = await platform();
         isMobile.value = os === "android" || os === "ios";
