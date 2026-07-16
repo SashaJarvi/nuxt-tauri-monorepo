@@ -16,7 +16,7 @@
   "dependencies": {
     "@repo/ui": "workspace:^",
     "@tauri-apps/api": "catalog:",
-    "@tauri-apps/plugin-http": "2.3.0",
+    "@tauri-apps/plugin-http": "2.5.9",
     "@tauri-apps/plugin-opener": "catalog:",
     "@tauri-apps/plugin-shell": "catalog:"
   },
