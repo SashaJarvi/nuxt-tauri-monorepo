@@ -187,6 +187,92 @@ pnpm shadcn add <component-name>
 
 Components are added to `packages/ui/app/components/ui/`.
 
+## iOS Development
+
+### Prerequisites
+
+1. **Xcode** with iOS SDK installed
+2. **iOS device** connected via USB (or simulator)
+3. **Apple Developer account** (free account works for development)
+
+### First-Time Setup
+
+When running `pnpm dev:ios` for the first time, you need to configure your iOS device:
+
+#### 1. Trust Developer Certificate
+
+On your iOS device:
+1. Go to **Settings** → **General** → **VPN & Device Management**
+2. Find your developer certificate under "Developer App"
+3. Tap it and select **Trust**
+
+#### 2. Grant Local Network Permission
+
+When the app launches, iOS will prompt for local network access. Tap **Allow**.
+
+If you missed the prompt:
+1. Go to **Settings** → **Privacy & Security** → **Local Network**
+2. Find the app and enable the toggle
+
+### Environment Configuration
+
+The iOS app needs to connect to your development server over the network. Create a `.env` file in `apps/native/`:
+
+```bash
+# apps/native/.env
+NUXT_PUBLIC_API_BASE_URL=http://<your-local-ip>:3000
+```
+
+Find your local IP:
+```bash
+# macOS
+ipconfig getifaddr en0
+
+# Linux
+hostname -I | awk '{print $1}'
+```
+
+### Running iOS Development
+
+```bash
+# Terminal 1: Start the web server (required for API)
+pnpm dev:web
+
+# Terminal 2: Start the iOS app
+pnpm dev:ios
+```
+
+### Viewing Logs
+
+To debug the iOS app, use Xcode's console or Safari's Web Inspector:
+
+#### Safari Web Inspector
+1. On your Mac, open **Safari** → **Settings** → **Advanced** → Enable "Show Develop menu"
+2. On your iOS device, go to **Settings** → **Safari** → **Advanced** → Enable "Web Inspector"
+3. Connect your device via USB
+4. In Safari on Mac, go to **Develop** → **[Your Device]** → **[Your App]**
+
+#### Xcode Console
+1. Open the project in Xcode: `apps/native/src-tauri/gen/apple/native.xcodeproj`
+2. Run the app from Xcode
+3. View logs in the Debug area (⇧⌘Y)
+
+### Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| "Untrusted Developer" error | Trust certificate in Settings → General → VPN & Device Management |
+| App can't connect to server | Check `.env` has correct IP; ensure device is on same network |
+| "Local Network" permission denied | Enable in Settings → Privacy & Security → Local Network |
+| API requests timeout | Verify web server is running with `pnpm dev:web` |
+| `isTauri` is false | Ensure you're running the Tauri build, not just Nuxt |
+
+### Technical Notes
+
+- **HTTP Plugin**: iOS Tauri apps use `@tauri-apps/plugin-http` for network requests (browser `fetch` doesn't work)
+- **ATS Exceptions**: App Transport Security is configured to allow local HTTP connections
+- **Plugin Version**: Using `tauri-plugin-http@2.3.0` due to a streaming bug in newer versions
+
 ## Configuration
 
 ### Tauri Configuration

@@ -2,23 +2,36 @@ packages:
   - "apps/*"
   - "packages/*"
 
+# Supply-chain hardening: only install package versions that have been
+# published for at least this many minutes (10080 = 1 week). Requires pnpm >= 10.16.
+minimumReleaseAge: 10080
+
+# Dependencies explicitly allowed to run install/postinstall build scripts
+# (pnpm >= 10 blocks all others by default). These ship prebuilt native
+# binaries via optionalDependencies, so approving them is low-risk.
+onlyBuiltDependencies:
+  - "@parcel/watcher"
+  - esbuild
+  - unrs-resolver
+  - vue-demi
+
 catalog:
-  nuxt: "^4.1.2"
+  nuxt: "^4.4.8"
   vue: "^3.5.13"
   typescript: "^5.7.2"
-  "@nuxt/ui": "^4.0.0"
-  "@nuxt/eslint": "^1.9.0"
-  "@tauri-apps/api": "^2.8.0"
-  "@tauri-apps/cli": "^2.8.4"
-  "@tauri-apps/plugin-opener": "^2.0.0"
-  "@tauri-apps/plugin-shell": "^2.3.1"
+  "@nuxt/ui": "^4.10.0"
+  "@nuxt/eslint": "^1.16.0"
+  "@tauri-apps/api": "^2.11.1"
+  "@tauri-apps/cli": "^2.11.4"
+  "@tauri-apps/plugin-opener": "^2.5.4"
+  "@tauri-apps/plugin-shell": "^2.3.5"
   "@vueuse/core": "^13.9.0"
   "@vueuse/nuxt": "^13.9.0"
-  tailwindcss: "^4.1.14"
+  tailwindcss: "^4.3.3"
   radix-vue: "^1.9.11"
   class-variance-authority: "^0.7.1"
   clsx: "^2.1.1"
   tailwind-merge: "^2.6.0"
   zod: "^3.24.0"
-  baseline-browser-mapping: "^2.9.11"
-  natural: "^8.0.1"
+  baseline-browser-mapping: "^2.10.43"
+  natural: "^8.1.1"

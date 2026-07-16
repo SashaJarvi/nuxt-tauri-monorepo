@@ -20,8 +20,8 @@
     "tauri": "pnpm --filter native tauri"
   },
   "devDependencies": {
-    "prettier": "^3.2.5",
-    "turbo": "^2.5.8"
+    "prettier": "^3.9.5",
+    "turbo": "^2.10.5"
   },
-  "packageManager": "pnpm@9.15.0"
+  "packageManager": "pnpm@10.34.5"
 }
