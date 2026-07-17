@@ -65,6 +65,23 @@ pub fn analyze(text: &str) -> Analysis {
     }
 }
 
+// Mirrors textAnalysisRequestSchema: 1..=10000 chars (JS String#length).
+#[tauri::command]
+pub fn analyze_text(text: String) -> Result<TextAnalysisResult, String> {
+    let len = text.encode_utf16().count();
+    if len < 1 {
+        return Err("Text input cannot be empty".into());
+    }
+    if len > 10000 {
+        return Err("Text input exceeds the maximum allowed length".into());
+    }
+    Ok(TextAnalysisResult {
+        id: uuid::Uuid::new_v4().to_string(),
+        timestamp: chrono::Utc::now().to_rfc3339_opts(chrono::SecondsFormat::Millis, true),
+        analysis: analyze(&text),
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use super::{analyze, Analysis};
