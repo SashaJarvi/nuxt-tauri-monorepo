@@ -12,7 +12,7 @@ const isLoading = ref(false);
 const result = ref<TextAnalysisResult | null>(null);
 const error = ref<string | null>(null);
 
-const { post } = useApi();
+const { analyze } = useTextAnalysis();
 
 async function handleSubmit() {
   if (!sourceText.value.trim()) {
@@ -23,9 +23,7 @@ async function handleSubmit() {
   isLoading.value = true;
   error.value = null;
 
-  const response = await post<TextAnalysisResult>("/api/text-analysis", {
-    text: sourceText.value,
-  });
+  const response = await analyze(sourceText.value);
 
   if (response.success) {
     result.value = response.data;

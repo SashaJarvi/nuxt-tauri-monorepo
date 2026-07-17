@@ -36,3 +36,14 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# CocoIndex Code (ccc)
+/.cocoindex_code/
+
+# temporary files
+
+*.temp.*
+*.tmp.*
+
+# superpowers skill working docs (specs/plans) - not project deliverables
+/docs/superpowers/

@@ -216,7 +216,14 @@ If you missed the prompt:
 
 ### Environment Configuration
 
-The iOS app needs to connect to your development server over the network. Create a `.env` file in `apps/native/`:
+The iOS app needs to connect to your development server over the network. This is
+handled automatically: `pnpm dev:ios` (and `pnpm dev:android`) run through
+`apps/native/scripts/dev-host.mjs`, which detects your machine's current LAN IP and
+sets `NUXT_PUBLIC_API_BASE_URL=http://<lan-ip>:3000` for the app — no manual setup
+needed. (Desktop `pnpm dev:native` uses the `localhost:3000` default.)
+
+To override the base URL explicitly, set `NUXT_PUBLIC_API_BASE_URL` in your
+environment or in a git-ignored `apps/native/.env`:
 
 ```bash
 # apps/native/.env
@@ -262,7 +269,7 @@ To debug the iOS app, use Xcode's console or Safari's Web Inspector:
 | Issue | Solution |
 |-------|----------|
 | "Untrusted Developer" error | Trust certificate in Settings → General → VPN & Device Management |
-| App can't connect to server | Check `.env` has correct IP; ensure device is on same network |
+| App can't connect to server | Ensure device is on the same network; check the `[dev-host] Using API base URL` line printed on startup matches your host IP |
 | "Local Network" permission denied | Enable in Settings → Privacy & Security → Local Network |
 | API requests timeout | Verify web server is running with `pnpm dev:web` |
 | `isTauri` is false | Ensure you're running the Tauri build, not just Nuxt |

@@ -40,10 +40,8 @@ Root `package.json` pins `"packageManager": "pnpm@10.34.5"`; use a pnpm managed 
 
 The native app calls the shared API routes over HTTP at `apiBaseUrl` (`apps/native/nuxt.config.ts`, default `http://localhost:3000`) rather than importing server code directly, so `pnpm dev:web` must be running in another terminal before `pnpm dev:native` or `pnpm dev:ios`.
 
-For iOS specifically, the device needs a reachable LAN IP, not `localhost`. Set it via `apps/native/.env`:
-```
-NUXT_PUBLIC_API_BASE_URL=http://<your-local-ip>:3000
-```
+Desktop (`pnpm dev:native`) uses the `localhost:3000` default. iOS/Android physical devices can't reach `localhost`, so `pnpm dev:ios` / `pnpm dev:android` run through `apps/native/scripts/dev-host.mjs`, which detects the host's current LAN IP and injects it as `NUXT_PUBLIC_API_BASE_URL=http://<lan-ip>:3000` — no manual `.env` editing needed. To override the base URL explicitly, set `NUXT_PUBLIC_API_BASE_URL` in your environment or an `apps/native/.env` (git-ignored).
+
 See README.md for the full first-time iOS device setup (trusting the dev certificate, local network permission) and troubleshooting table.
 
 ### Single package operations
