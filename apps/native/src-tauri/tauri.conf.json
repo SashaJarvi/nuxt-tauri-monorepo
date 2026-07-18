@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "native",
+  "productName": "nuxt-tauri-starter",
   "version": "0.1.0",
-  "identifier": "com.nuxt-tauri-native.app",
+  "identifier": "com.example.starter",
   "build": {
     "beforeDevCommand": "pnpm dev",
     "beforeBuildCommand": "pnpm generate",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "native",
+        "title": "Nuxt Tauri Starter",
         "width": 800,
         "height": 600
       }
