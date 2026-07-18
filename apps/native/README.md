@@ -1,6 +1,6 @@
-# Tauri + Vue + TypeScript
+# apps/native
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+The Tauri 2 desktop/mobile app. Extends the shared `packages/ui` Nuxt layer via `extends: ["@repo/ui"]` in `nuxt.config.ts` — most feature code lives there, not here. Rust/Tauri backend lives under `src-tauri/`. See the root [README.md](../../README.md) for setup, scripts, iOS/Android instructions, and architecture.
 
 ## Recommended IDE Setup
 
