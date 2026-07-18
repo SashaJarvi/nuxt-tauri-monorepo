@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-A pnpm/Turborepo monorepo deploying **one Nuxt 4 codebase** to web, desktop (Tauri 2), and mobile (iOS/Android via Tauri 2). All apps extend a shared Nuxt layer (`packages/ui`) that provides components, composables, types, schemas, and server API routes.
+This is a starter template: a pnpm/Turborepo monorepo deploying **one Nuxt 4 codebase** to web, desktop (Tauri 2), and mobile (iOS/Android via Tauri 2). All apps extend a shared Nuxt layer (`packages/ui`) that provides components, composables, types, schemas, and server API routes.
+
+`ExampleView.vue` (rendered by both `apps/web/app/app.vue` and `apps/native/app/app.vue`) is a minimal reference feature exercising every layer — platform detection, a shared Zod-validated API route, and a native Rust command. Delete it and follow the same pattern when building a real feature. New consumers of this template run `pnpm rename` first (see README.md) to set their own app name and bundle identifier.
 
 ## Commands
 
@@ -66,7 +68,7 @@ There's a single set of composables in `packages/ui/app/composables` that both a
 
 ### Server routes are shared, called differently per platform
 
-API routes live only in `packages/ui/server/api/` (e.g. `text-analysis.post.ts`, `health.get.ts`, `example.post.ts`) and are inherited by both apps via the Nuxt layer. `apps/web` serves and calls them same-origin. `apps/native` has `ssr: false` (required for Tauri) and no server of its own — it calls the web app's server routes over the network through `useApi()`, which is why the web dev server must be running for native/mobile dev, and why `apps/web/nuxt.config.ts` adds explicit CORS `routeRules` for `/api/**`.
+API routes live only in `packages/ui/server/api/` (e.g. `health.get.ts`, `example.post.ts`) and are inherited by both apps via the Nuxt layer. `apps/web` serves and calls them same-origin. `apps/native` has `ssr: false` (required for Tauri) and no server of its own — it calls the web app's server routes over the network through `useApi()`, which is why the web dev server must be running for native/mobile dev, and why `apps/web/nuxt.config.ts` adds explicit CORS `routeRules` for `/api/**`.
 
 Response shape is standardized via `createSuccessResponse`/`createErrorResponse` in `packages/ui/app/utils/api.ts` and the `ApiResult<T>` type — new routes should follow this convention. Request bodies are validated with Zod schemas in `packages/ui/app/schemas/`.
 
@@ -76,6 +78,8 @@ Response shape is standardized via `createSuccessResponse`/`createErrorResponse`
 
 `tauri-plugin-http` is pinned to `=2.5.9` (exact version) in `Cargo.toml` due to a known streaming bug in newer versions; don't loosen this pin without checking upstream fixes. Rust crate versions for Tauri packages should stay aligned with the npm `@tauri-apps/*` versions in the pnpm catalog.
 
+The iOS/Android platform projects under `apps/native/src-tauri/gen/` are gitignored, not committed — they're regenerated per-developer via `pnpm tauri ios init` / `pnpm tauri android init` so per-developer signing config (Apple Team ID, etc.) never ends up in git.
+
 ### Dependency versioning via pnpm catalog
 
 Shared dependency versions are centralized in `pnpm-workspace.yaml` under `catalog:` and referenced from package.json files as `"nuxt": "catalog:"`. When bumping a shared dependency (Nuxt, Vue, Tauri packages, Tailwind, etc.), update the catalog entry in `pnpm-workspace.yaml` rather than individual package.json files.
@@ -84,7 +88,7 @@ Shared dependency versions are centralized in `pnpm-workspace.yaml` under `catal
 
 ### UI components
 
-`packages/ui/app/components/ui/` holds shadcn-vue-style primitives (Button, Card, Textarea, etc.) added via `pnpm shadcn add <component>`; `components/views/` holds composed feature views (e.g. `AnalyzeTextView.vue`). Both directories are registered with `pathPrefix: false` in the layer's `nuxt.config.ts`, so components are auto-imported by bare name across both apps. Styling is Tailwind CSS v4 plus Nuxt UI, with `class-variance-authority`/`tailwind-merge`/`clsx` for variant styling (see `packages/ui/app/lib/utils.ts`'s `cn()` helper).
+`packages/ui/app/components/ui/` holds shadcn-vue-style primitives (Button, Card, Textarea, etc.) added via `pnpm shadcn add <component>`; `components/views/` holds composed feature views (e.g. `ExampleView.vue`). Both directories are registered with `pathPrefix: false` in the layer's `nuxt.config.ts`, so components are auto-imported by bare name across both apps. Styling is Tailwind CSS v4 plus Nuxt UI, with `class-variance-authority`/`tailwind-merge`/`clsx` for variant styling (see `packages/ui/app/lib/utils.ts`'s `cn()` helper).
 
 ### ESLint config
 

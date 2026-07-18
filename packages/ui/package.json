@@ -17,18 +17,16 @@
     "./utils/*": "./app/utils/*.ts",
     "./app/utils/api": "./app/utils/api.ts",
     "./app/schemas/api": "./app/schemas/api.ts",
-    "./app/types/api": "./app/types/api.ts",
-    "./app/schemas/text-analysis": "./app/schemas/text-analysis.ts",
-    "./app/types/text-analysis": "./app/types/text-analysis.ts"
+    "./app/types/api": "./app/types/api.ts"
   },
   "scripts": {
     "postinstall": "nuxt prepare",
-    "lint": "eslint .",
     "shadcn": "pnpm dlx shadcn-vue@latest"
   },
   "dependencies": {
     "@nuxt/ui": "catalog:",
     "@tauri-apps/api": "catalog:",
+    "@tauri-apps/plugin-http": "catalog:",
     "@vueuse/core": "catalog:",
     "radix-vue": "catalog:",
     "class-variance-authority": "catalog:",
@@ -36,8 +34,7 @@
     "tailwind-merge": "catalog:",
     "tailwindcss": "catalog:",
     "lucide-vue-next": "^0.474.0",
-    "zod": "catalog:",
-    "natural": "catalog:"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "nuxt": "catalog:",
@@ -45,7 +42,6 @@
     "tsconfig": "workspace:*",
     "eslint-config-custom": "workspace:*",
     "@tauri-apps/plugin-os": "^2.2.0",
-    "@tauri-apps/plugin-opener": "catalog:",
-    "@types/natural": "^6.0.1"
+    "@tauri-apps/plugin-opener": "catalog:"
   }
 }

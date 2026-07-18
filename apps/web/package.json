@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-app",
+  "name": "web",
   "type": "module",
   "private": true,
   "scripts": {
@@ -7,7 +7,9 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "check-types": "nuxt typecheck"
   },
   "dependencies": {
     "@repo/ui": "workspace:^",
@@ -17,6 +19,7 @@
     "@nuxt/eslint": "catalog:",
     "eslint": "^9.0.0",
     "typescript": "catalog:",
+    "vue-tsc": "catalog:",
     "baseline-browser-mapping": "catalog:"
   }
 }

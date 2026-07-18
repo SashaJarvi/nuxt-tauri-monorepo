@@ -1,6 +1,6 @@
-# Nuxt 4 + Tauri 2 Monorepo
+# Nuxt 4 + Tauri 2 Starter
 
-A production-ready monorepo template for building cross-platform applications with **Nuxt 4** and **Tauri 2**. Deploy to web, desktop (Windows, macOS, Linux), and mobile (iOS, Android) from a single codebase.
+A starter template for building cross-platform applications with **Nuxt 4** and **Tauri 2**. Deploy one Nuxt codebase to web, desktop (Windows, macOS, Linux), and mobile (iOS, Android).
 
 ## Features
 
@@ -8,16 +8,26 @@ A production-ready monorepo template for building cross-platform applications wi
 - **Tauri 2** for desktop and mobile builds
 - **Turborepo** for efficient monorepo management
 - **pnpm Catalogs** for centralized dependency versioning
-- **Shared UI Layer** with auto-imported components
+- **Shared UI Layer** (`packages/ui`) — components, composables, server routes shared across web and native
 - **Nuxt UI** component library with Tailwind CSS v4
 - **shadcn-vue** style components (Button, Card, Textarea, etc.)
-- **Shared Server Routes** across web and native apps
-- **Text Analysis Feature** with NLP-powered sentiment analysis
+- **Example feature** wired end-to-end (Vue view → shared Zod-validated API route → native Rust command) so you can see how a real feature is structured before you build your own
+- **`pnpm rename`** script to make this your own app in one step
+- **GitHub Actions CI** (lint, type-check, web build, `cargo check`)
+
+## Using this template
+
+1. Click **"Use this template"** on GitHub (or `git clone` this repo and remove its git history yourself).
+2. `corepack enable` (this repo pins an exact pnpm version via `packageManager` in `package.json`).
+3. `pnpm install` (if this fails with `ERR_PNPM_NO_MATURE_MATCHING_VERSION`, see [Supply-chain hardening](#supply-chain-hardening))
+4. `pnpm rename` — prompts for your app's display name and bundle identifier (e.g. `com.acme.myapp`) and updates `tauri.conf.json`, the native app title, and the root package name. To skip the prompts, pass them as flags: `pnpm rename --name "My App" --id com.acme.myapp`.
+5. Replace the app icon: `pnpm tauri icon path/to/icon.png` (1024x1024 PNG recommended).
+6. Update the copyright holder in `LICENSE`.
+7. Delete or replace the example feature (see [Example feature](#example-feature)) and start building.
 
 ## Project Structure
 
 ```
-nuxt-tauri-monorepo/
 ├── apps/
 │   ├── web/                    # Nuxt 4 web application
 │   │   └── app/
@@ -34,7 +44,7 @@ nuxt-tauri-monorepo/
 │   │   ├── app/
 │   │   │   ├── components/     # Shared Vue components
 │   │   │   │   ├── ui/         # UI primitives (Button, Card, etc.)
-│   │   │   │   └── views/      # Feature views (AnalyzeTextView)
+│   │   │   │   └── views/      # Feature views (ExampleView)
 │   │   │   ├── composables/    # Shared composables
 │   │   │   ├── types/          # TypeScript types
 │   │   │   ├── schemas/        # Zod validation schemas
@@ -43,6 +53,8 @@ nuxt-tauri-monorepo/
 │   │   └── nuxt.config.ts
 │   ├── eslint-config-custom/   # Shared ESLint configuration
 │   └── tsconfig/               # Shared TypeScript configuration
+├── scripts/
+│   └── rename.mjs              # `pnpm rename` — see Using this template
 ├── pnpm-workspace.yaml         # Workspace config with catalogs
 ├── turbo.json                  # Turborepo configuration
 └── package.json                # Root scripts
@@ -50,8 +62,8 @@ nuxt-tauri-monorepo/
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/) >= 18
-- [pnpm](https://pnpm.io/) >= 9.15.0
+- [Node.js](https://nodejs.org/) >= 22
+- [pnpm](https://pnpm.io/) managed via corepack — see `packageManager` in `package.json`
 - [Rust](https://rustup.rs/) (for Tauri builds)
 
 ### For Mobile Development
@@ -59,20 +71,14 @@ nuxt-tauri-monorepo/
 - **iOS**: Xcode with iOS SDK
 - **Android**: Android Studio with Android SDK
 
-## Getting Started
-
-### Installation
+The platform projects under `apps/native/src-tauri/gen/` are generated, not committed. Before your first iOS or Android run:
 
 ```bash
-# Clone the repository
-git clone <repository-url>
-cd nuxt-tauri-monorepo
-
-# Install dependencies
-pnpm install
+pnpm tauri ios init
+pnpm tauri android init
 ```
 
-### Development
+## Development
 
 ```bash
 # Start web app
@@ -81,14 +87,14 @@ pnpm dev:web
 # Start native desktop app (requires web server running)
 pnpm dev:native
 
-# Start Android app
+# Start Android app (requires web server running)
 pnpm dev:android
 
-# Start iOS app
+# Start iOS app (requires web server running)
 pnpm dev:ios
 ```
 
-### Building
+## Building
 
 ```bash
 # Build web app
@@ -106,17 +112,18 @@ pnpm build:ios
 
 ## Key Technologies
 
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| Nuxt | 4.1.2 | Vue meta-framework |
-| Vue | 3.5.13 | Frontend framework |
-| Tauri | 2.x | Desktop/mobile runtime |
-| Tailwind CSS | 4.x | Utility-first CSS |
-| Nuxt UI | 4.x | Component library |
-| TypeScript | 5.7.2 | Type safety |
-| Zod | 3.24.0 | Schema validation |
-| natural | 8.0.1 | NLP text analysis |
-| Turborepo | 2.5.8 | Monorepo tooling |
+Exact versions are centralized in the `catalog:` section of `pnpm-workspace.yaml` — check there for what's currently pinned.
+
+| Technology | Purpose |
+|------------|---------|
+| Nuxt 4 | Vue meta-framework |
+| Vue 3 | Frontend framework |
+| Tauri 2 | Desktop/mobile runtime |
+| Tailwind CSS 4 | Utility-first CSS |
+| Nuxt UI | Component library |
+| TypeScript | Type safety |
+| Zod | Schema validation |
+| Turborepo | Monorepo tooling |
 
 ## Shared UI Layer
 
@@ -124,20 +131,29 @@ The `packages/ui` package is a Nuxt layer that provides shared functionality acr
 
 ### Components
 
-- **UI Primitives**: Button, Card, CardHeader, CardTitle, CardContent, CardFooter, Textarea
-- **Views**: AnalyzeTextView (text analysis feature)
+- **UI Primitives**: Button, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Textarea
+- **Views**: ExampleView (see [Example feature](#example-feature))
 
 ### Composables
 
-- `usePlatform()` - Detect runtime platform (web/Tauri)
-- `useApi()` - Unified API client for web and native
-- `useTauri()` - Tauri-specific utilities
+- `usePlatform()` — detect runtime platform (web / Tauri desktop / Tauri mobile)
+- `useApi()` — unified HTTP client for web and native
+- `useTauri()` — wraps Tauri's `invoke()` and `openUrl()`
 
 ### Server Routes
 
-- `GET /api/health` - Health check endpoint
-- `POST /api/example` - Example POST endpoint
-- `POST /api/text-analysis` - Text analysis with NLP
+- `GET /api/health` — health check endpoint
+- `POST /api/example` — example POST endpoint, used by the example feature
+
+## Example feature
+
+`ExampleView.vue` (rendered by both `apps/web/app/app.vue` and `apps/native/app/app.vue`) is a minimal, working reference for how a feature is wired through every layer of this template:
+
+- **Platform detection** — `usePlatform()` renders which environment the app is running in.
+- **Shared API route** — a form posts to `/api/example` (`packages/ui/server/api/example.post.ts`) via `useApi()`, validated on the server with the Zod schema in `packages/ui/app/schemas/api.ts`. This route runs identically on web (same-origin) and native (over HTTP via `useApi()`).
+- **Native Rust command** — a button invokes the `greet` Tauri command (`apps/native/src-tauri/src/lib.rs`) via `useTauri().invoke()`. Only shown when running under Tauri.
+
+When you're ready to build your own feature, delete `ExampleView.vue` and follow the same pattern: put shared code in `packages/ui`, add server routes under `packages/ui/server/api/`, and add native-only Rust commands in `apps/native/src-tauri/src/lib.rs`.
 
 ## pnpm Catalogs
 
@@ -145,9 +161,9 @@ Dependencies are managed centrally via pnpm catalogs in `pnpm-workspace.yaml`:
 
 ```yaml
 catalog:
-  nuxt: "^4.1.2"
+  nuxt: "^4.4.8"
   vue: "^3.5.13"
-  tailwindcss: "^4.1.14"
+  tailwindcss: "^4.3.3"
   # ... more dependencies
 ```
 
@@ -160,6 +176,18 @@ Use in package.json:
   }
 }
 ```
+
+### Supply-chain hardening
+
+`pnpm-workspace.yaml` sets `minimumReleaseAge: 10080`, so pnpm refuses to install any package version published less than a week ago. This mitigates compromised-release attacks, but has a side effect: **a plain `pnpm install` can fail** with `ERR_PNPM_NO_MATURE_MATCHING_VERSION` when a catalog range resolves to a version that's only a few days old.
+
+When that happens you have three options:
+
+- `pnpm install --frozen-lockfile` — installs exactly what's in the committed `pnpm-lock.yaml` without re-resolving (this is what CI uses, and it's the recommended path).
+- Wait for the flagged version to age past the one-week window, then `pnpm install`.
+- Add the specific package to [`minimumReleaseAgeExclude`](https://pnpm.io/settings#minimumreleaseageexclude) if you consciously accept a fresh release.
+
+`onlyBuiltDependencies` similarly allowlists which packages may run install/postinstall scripts — add new native-build deps there explicitly.
 
 ## Scripts Reference
 
@@ -174,8 +202,10 @@ Use in package.json:
 | `pnpm build:web` | Build web app |
 | `pnpm build:native` | Build native desktop app |
 | `pnpm lint` | Run ESLint across all packages |
+| `pnpm check-types` | Type-check all packages |
 | `pnpm format` | Format code with Prettier |
 | `pnpm shadcn` | Add shadcn-vue components |
+| `pnpm rename` | Rename this template into your own app |
 
 ## Adding New Components
 
@@ -194,6 +224,7 @@ Components are added to `packages/ui/app/components/ui/`.
 1. **Xcode** with iOS SDK installed
 2. **iOS device** connected via USB (or simulator)
 3. **Apple Developer account** (free account works for development)
+4. Run `pnpm tauri ios init` once to generate `apps/native/src-tauri/gen/apple/`
 
 ### First-Time Setup
 
@@ -223,7 +254,7 @@ sets `NUXT_PUBLIC_API_BASE_URL=http://<lan-ip>:3000` for the app — no manual s
 needed. (Desktop `pnpm dev:native` uses the `localhost:3000` default.)
 
 To override the base URL explicitly, set `NUXT_PUBLIC_API_BASE_URL` in your
-environment or in a git-ignored `apps/native/.env`:
+environment or in a git-ignored `apps/native/.env` (see `apps/native/.env.example`):
 
 ```bash
 # apps/native/.env
@@ -260,7 +291,7 @@ To debug the iOS app, use Xcode's console or Safari's Web Inspector:
 4. In Safari on Mac, go to **Develop** → **[Your Device]** → **[Your App]**
 
 #### Xcode Console
-1. Open the project in Xcode: `apps/native/src-tauri/gen/apple/native.xcodeproj`
+1. Open the project in Xcode: the `.xcodeproj` under `apps/native/src-tauri/gen/apple/`
 2. Run the app from Xcode
 3. View logs in the Debug area (⇧⌘Y)
 
@@ -278,7 +309,7 @@ To debug the iOS app, use Xcode's console or Safari's Web Inspector:
 
 - **HTTP Plugin**: iOS Tauri apps use `@tauri-apps/plugin-http` for network requests (browser `fetch` doesn't work)
 - **ATS Exceptions**: App Transport Security is configured to allow local HTTP connections
-- **Plugin Version**: Using `tauri-plugin-http@2.3.0` due to a streaming bug in newer versions
+- **Plugin Version**: `tauri-plugin-http` is pinned to `=2.5.9` due to a streaming bug in newer versions — don't loosen this pin without checking upstream fixes
 
 ## Configuration
 
@@ -303,6 +334,10 @@ export default defineNuxtConfig({
 });
 ```
 
+## CI
+
+`.github/workflows/ci.yml` runs on every push/PR to `main`: ESLint, type-checking, and a web build in one job; `cargo check` (with a stub frontend build output, since Tauri needs `frontendDist` to exist at compile time) in another.
+
 ## License
 
-MIT
+MIT — update the copyright holder in `LICENSE` for your own project.

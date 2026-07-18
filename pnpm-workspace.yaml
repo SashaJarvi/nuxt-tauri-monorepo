@@ -25,6 +25,9 @@ catalog:
   "@tauri-apps/cli": "^2.11.4"
   "@tauri-apps/plugin-opener": "^2.5.4"
   "@tauri-apps/plugin-shell": "^2.3.5"
+  # Pinned exact due to a streaming bug in newer versions; keep aligned with the
+  # Rust `tauri-plugin-http = "=2.5.9"` pin in apps/native/src-tauri/Cargo.toml.
+  "@tauri-apps/plugin-http": "2.5.9"
   "@vueuse/core": "^13.9.0"
   "@vueuse/nuxt": "^13.9.0"
   tailwindcss: "^4.3.3"
@@ -34,4 +37,4 @@ catalog:
   tailwind-merge: "^2.6.0"
   zod: "^3.24.0"
   baseline-browser-mapping: "^2.10.43"
-  natural: "^8.1.1"
+  vue-tsc: "^3.3.5"

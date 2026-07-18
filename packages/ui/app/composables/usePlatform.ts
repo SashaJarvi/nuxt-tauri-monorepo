@@ -11,12 +11,9 @@ export function usePlatform() {
   // Tauri v2 uses __TAURI_INTERNALS__, v1 used __TAURI__
   if (!initialized && typeof window !== "undefined") {
     const hasTauri = "__TAURI__" in window || "__TAURI_INTERNALS__" in window;
-    console.log("[usePlatform] Detection - __TAURI__:", "__TAURI__" in window);
-    console.log("[usePlatform] Detection - __TAURI_INTERNALS__:", "__TAURI_INTERNALS__" in window);
     if (hasTauri) {
       isTauri.value = true;
       isWeb.value = false;
-      console.log("[usePlatform] Tauri detected!");
     }
     initialized = true;
   }

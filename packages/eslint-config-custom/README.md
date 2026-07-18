@@ -1,3 +1,3 @@
-# `@turbo/eslint-config`
+# eslint-config-custom
 
-Collection of internal eslint configurations.
+Shared ESLint configuration for this monorepo's workspace packages, built on `@vercel/style-guide` and `@vue/eslint-config-typescript`. See the root [README.md](../../README.md) for the full project overview.

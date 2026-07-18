@@ -14,19 +14,11 @@ export function useApi() {
     options?: RequestInit
   ): Promise<ApiResult<T>> {
     try {
-      // Debug logging
-      console.log("[useApi] isTauri:", isTauri.value);
-      console.log("[useApi] baseUrl:", baseUrl.value);
-      console.log("[useApi] full URL:", `${baseUrl.value}${endpoint}`);
-
       // Use Tauri HTTP plugin for native apps, browser fetch for web
       let fetchFn: typeof fetch = fetch;
       if (isTauri.value) {
-        console.log("[useApi] Using Tauri HTTP plugin fetch");
         const { fetch: tauriFetch } = await import("@tauri-apps/plugin-http");
         fetchFn = tauriFetch;
-      } else {
-        console.log("[useApi] Using browser fetch");
       }
 
       const response = await fetchFn(`${baseUrl.value}${endpoint}`, {
@@ -36,7 +28,6 @@ export function useApi() {
 
       // Use text() + JSON.parse() as workaround for Tauri iOS streaming issue
       const text = await response.text();
-      console.log("[useApi] Response text:", text);
       const data = JSON.parse(text);
 
       if (!response.ok) {
