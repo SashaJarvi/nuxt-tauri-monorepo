@@ -1,14 +1,14 @@
 {
-  "name": "with-vue-nuxt",
+  "name": "nuxt-tauri-starter",
   "private": true,
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "dev:web": "pnpm --filter nuxt-app dev",
+    "dev:web": "pnpm --filter web dev",
     "dev:native": "pnpm --filter native tauri dev",
     "dev:android": "node apps/native/scripts/dev-host.mjs pnpm --filter native tauri android dev",
     "dev:ios": "node apps/native/scripts/dev-host.mjs pnpm --filter native tauri ios dev",
-    "build:web": "pnpm --filter nuxt-app build",
+    "build:web": "pnpm --filter web build",
     "build:native": "pnpm --filter native tauri build",
     "build:android": "pnpm --filter native tauri android build",
     "build:ios": "pnpm --filter native tauri ios build",
@@ -17,7 +17,8 @@
     "clean": "turbo run clean",
     "check-types": "turbo check-types",
     "shadcn": "pnpm --filter @repo/ui shadcn",
-    "tauri": "pnpm --filter native tauri"
+    "tauri": "pnpm --filter native tauri",
+    "rename": "node scripts/rename.mjs"
   },
   "devDependencies": {
     "prettier": "^3.9.5",
