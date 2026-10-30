@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@nuxt/eslint": "catalog:",
-    "eslint": "^9.0.0",
+    "eslint": "^9.39.5",
     "typescript": "catalog:",
     "vue-tsc": "catalog:",
     "baseline-browser-mapping": "catalog:"
