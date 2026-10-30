@@ -16,18 +16,18 @@ onlyBuiltDependencies:
   - vue-demi
 
 catalog:
-  nuxt: "^4.5.2"
-  vue: "^3.5.41"
+  nuxt: "^4.6.2"
+  vue: "^3.5.44"
   typescript: "^5.9.3"
-  "@nuxt/ui": "^4.11.1"
+  "@nuxt/ui": "^4.12.0"
   "@nuxt/eslint": "^1.17.0"
-  "@tauri-apps/api": "^2.11.1"
-  "@tauri-apps/cli": "^2.11.4"
-  "@tauri-apps/plugin-opener": "^2.5.5"
-  "@tauri-apps/plugin-shell": "^2.3.6"
+  "@tauri-apps/api": "^2.12.4"
+  "@tauri-apps/cli": "^2.12.4"
+  "@tauri-apps/plugin-opener": "^2.7.2"
+  "@tauri-apps/plugin-shell": "^2.5.0"
   # Pinned exact due to a streaming bug in newer versions; keep aligned with the
-  # Rust `tauri-plugin-http = "=2.5.9"` pin in apps/native/src-tauri/Cargo.toml.
-  "@tauri-apps/plugin-http": "2.5.9"
+  # Rust `tauri-plugin-http = "=2.8.3"` pin in apps/native/src-tauri/Cargo.toml.
+  "@tauri-apps/plugin-http": "2.8.3"
   "@vueuse/core": "^13.9.0"
   "@vueuse/nuxt": "^13.9.0"
   tailwindcss: "^4.3.3"
@@ -36,5 +36,5 @@ catalog:
   clsx: "^2.1.1"
   tailwind-merge: "^2.6.1"
   zod: "^3.25.76"
-  baseline-browser-mapping: "^2.11.22"
-  vue-tsc: "^3.3.11"
+  baseline-browser-mapping: "^2.11.31"
+  vue-tsc: "^3.3.13"

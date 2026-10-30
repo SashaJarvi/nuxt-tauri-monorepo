@@ -41,7 +41,7 @@
     "typescript": "catalog:",
     "tsconfig": "workspace:*",
     "eslint-config-custom": "workspace:*",
-    "@tauri-apps/plugin-os": "^2.3.2",
+    "@tauri-apps/plugin-os": "^2.4.0",
     "@tauri-apps/plugin-opener": "catalog:"
   }
 }

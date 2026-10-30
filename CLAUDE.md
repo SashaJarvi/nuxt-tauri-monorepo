@@ -8,48 +8,6 @@ This is a starter template: a pnpm/Turborepo monorepo deploying **one Nuxt 4 cod
 
 `ExampleView.vue` (rendered by both `apps/web/app/app.vue` and `apps/native/app/app.vue`) is a minimal reference feature exercising every layer — platform detection, a shared Zod-validated API route, and a native Rust command. Delete it and follow the same pattern when building a real feature. New consumers of this template run `pnpm rename` first (see README.md) to set their own app name and bundle identifier.
 
-## Commands
-
-Run from the repo root unless noted.
-
-```bash
-pnpm install           # install all workspace deps
-
-pnpm dev                # start all apps in parallel via turbo (equivalent to running dev:web + dev:native concurrently)
-pnpm dev:web            # Nuxt web app dev server (localhost:3000)
-pnpm dev:native          # Tauri desktop app — requires the web server running (see below)
-pnpm dev:android        # Tauri Android app
-pnpm dev:ios            # Tauri iOS app — requires the web server running
-
-pnpm build              # build all apps via turbo
-pnpm build:web
-pnpm build:native
-pnpm build:android
-pnpm build:ios
-
-pnpm lint               # turbo run lint (ESLint across all packages)
-pnpm check-types        # turbo check-types
-pnpm clean              # turbo run clean
-pnpm format             # prettier --write on ts/tsx/md
-pnpm shadcn add <name>  # add a shadcn-vue component into packages/ui/app/components/ui/
-```
-
-There is no test suite in this repo currently.
-
-Root `package.json` pins `"packageManager": "pnpm@10.34.5"`; use a pnpm managed via corepack rather than an arbitrary global install, since `pnpm-workspace.yaml`'s `minimumReleaseAge` supply-chain check requires pnpm ≥ 10.16.
-
-### Native/mobile dev requires the web server
-
-The native app calls the shared API routes over HTTP at `apiBaseUrl` (`apps/native/nuxt.config.ts`, default `http://localhost:3000`) rather than importing server code directly, so `pnpm dev:web` must be running in another terminal before `pnpm dev:native` or `pnpm dev:ios`.
-
-Desktop (`pnpm dev:native`) uses the `localhost:3000` default. iOS/Android physical devices can't reach `localhost`, so `pnpm dev:ios` / `pnpm dev:android` run through `apps/native/scripts/dev-host.mjs`, which detects the host's current LAN IP and injects it as `NUXT_PUBLIC_API_BASE_URL=http://<lan-ip>:3000` — no manual `.env` editing needed. To override the base URL explicitly, set `NUXT_PUBLIC_API_BASE_URL` in your environment or an `apps/native/.env` (git-ignored).
-
-See README.md for the full first-time iOS device setup (trusting the dev certificate, local network permission) and troubleshooting table.
-
-### Single package operations
-
-Use pnpm's `--filter` to target one workspace package, e.g. `pnpm --filter native tauri dev`, `pnpm --filter @repo/ui lint`. `pnpm tauri <args>` at the root is shorthand for `pnpm --filter native tauri <args>`.
-
 ## Architecture
 
 ### The shared layer is the app
@@ -76,7 +34,7 @@ Response shape is standardized via `createSuccessResponse`/`createErrorResponse`
 
 `apps/native/src-tauri` is a standard Tauri 2 project. `src/lib.rs` registers plugins (`tauri-plugin-http`, `tauri-plugin-opener`) and Tauri commands via `invoke_handler!`; add new native-only commands there and call them from the frontend via `useTauri().invoke()`. Permissions for what the frontend is allowed to call (including which HTTP hosts `plugin-http` may fetch) are declared in `apps/native/src-tauri/capabilities/default.json` — new allowed API hosts must be added there.
 
-`tauri-plugin-http` is pinned to `=2.5.9` (exact version) in `Cargo.toml` due to a known streaming bug in newer versions; don't loosen this pin without checking upstream fixes. Rust crate versions for Tauri packages should stay aligned with the npm `@tauri-apps/*` versions in the pnpm catalog.
+`tauri-plugin-http` is pinned to `=2.8.3` (exact version) in `Cargo.toml` due to a known streaming bug in newer versions; don't loosen this pin without checking upstream fixes. Rust crate versions for Tauri packages should stay aligned with the npm `@tauri-apps/*` versions in the pnpm catalog.
 
 The iOS/Android platform projects under `apps/native/src-tauri/gen/` are gitignored, not committed — they're regenerated per-developer via `pnpm tauri ios init` / `pnpm tauri android init` so per-developer signing config (Apple Team ID, etc.) never ends up in git.
 

@@ -309,7 +309,7 @@ To debug the iOS app, use Xcode's console or Safari's Web Inspector:
 
 - **HTTP Plugin**: iOS Tauri apps use `@tauri-apps/plugin-http` for network requests (browser `fetch` doesn't work)
 - **ATS Exceptions**: App Transport Security is configured to allow local HTTP connections
-- **Plugin Version**: `tauri-plugin-http` is pinned to `=2.5.9` due to a streaming bug in newer versions — don't loosen this pin without checking upstream fixes
+- **Plugin Version**: `tauri-plugin-http` is pinned to `=2.8.3` due to a streaming bug in newer versions — don't loosen this pin without checking upstream fixes
 
 ## Configuration
 
